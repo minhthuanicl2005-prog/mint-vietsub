@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xem phim — Mint Vietsub</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@500;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14100f; --bg-raised:#1f1915; --line:#3a2f28;
+    --ink:#ede6dc; --ink-dim:#a89c8d; --red:#c7442e; --gold:#c9a363;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Be Vietnam Pro', sans-serif;
+  }
+  h1,h2,h3,.serif{ font-family:'Noto Serif', serif; }
+
+  header{
+    padding:20px 6vw;
+    display:flex; align-items:center; gap:10px;
+    border-bottom:1px solid var(--line);
+  }
+  header a.back{
+    color:var(--ink-dim); text-decoration:none; font-size:0.85rem;
+    display:flex; align-items:center; gap:6px;
+  }
+  header a.back:hover{ color:var(--gold); }
+  .brand{ display:flex; align-items:baseline; gap:10px; margin-left:auto; }
+  .brand-mark{ width:9px; height:9px; background:var(--red); display:inline-block; transform:rotate(45deg); }
+  .brand h2{ font-size:1.1rem; margin:0; }
+  .brand span{ color:var(--gold); }
+
+  main{
+    max-width:1300px; margin:0 auto; padding:30px 5vw 80px;
+  }
+  .watch-title{
+    font-size:1.5rem; margin:0 0 4px;
+  }
+  .watch-ep-label{
+    color:var(--gold); font-size:0.9rem; margin:0 0 24px;
+  }
+
+  .watch-grid{
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:26px;
+    align-items:start;
+  }
+  .player-wrap{
+    aspect-ratio:16/9;
+    background:#0a0807;
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .player-wrap iframe{ width:100%; height:100%; border:0; display:block; }
+
+  .ep-panel{
+    background:var(--bg-raised); border:1px solid var(--line);
+    max-height:640px; display:flex; flex-direction:column;
+  }
+  .ep-panel-head{
+    padding:14px 16px; border-bottom:1px solid var(--line);
+    font-size:0.95rem; font-weight:600;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .ep-panel-head span{ color:var(--ink-dim); font-size:0.78rem; font-weight:400; }
+  .ep-list{ overflow-y:auto; }
+  .ep-item{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 16px; cursor:pointer; border-bottom:1px solid var(--line);
+    transition:background 0.12s ease;
+  }
+  .ep-item:last-child{ border-bottom:none; }
+  .ep-item:hover{ background:rgba(255,255,255,0.03); }
+  .ep-item.active{ background:rgba(199,163,99,0.1); border-left:3px solid var(--gold); padding-left:13px; }
+  .ep-item img{ width:80px; aspect-ratio:16/9; object-fit:cover; flex-shrink:0; }
+  .ep-item .ep-text{ min-width:0; }
+  .ep-item .ep-num{ color:var(--gold); font-size:0.78rem; margin-bottom:3px; }
+  .ep-item .ep-title{
+    font-size:0.82rem; line-height:1.35;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+
+  #status{ color:var(--ink-dim); padding:80px 0; text-align:center; }
+  #status a{ color:var(--gold); }
+
+  @media (max-width:900px){
+    .watch-grid{ grid-template-columns:1fr; }
+    .ep-panel{ max-height:400px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">← Về trang chủ</a>
+  <div class="brand">
+    <span class="brand-mark"></span>
+    <h2>Mint <span>Vietsub</span></h2>
+  </div>
+</header>
+
+<main>
+  <div id="status">Đang tải phim…</div>
+
+  <div id="watch-content" style="display:none;">
+    <h1 class="watch-title serif" id="show-title"></h1>
+    <p class="watch-ep-label" id="ep-label"></p>
+
+    <div class="watch-grid">
+      <div class="player-wrap" id="player-wrap"></div>
+      <div class="ep-panel">
+        <div class="ep-panel-head">
+          <span id="ep-panel-title">Danh sách tập</span>
+          <span id="ep-count"></span>
+        </div>
+        <div class="ep-list" id="ep-list"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ĐỔI địa chỉ này thành URL Worker thật của bạn
+const API_BASE = "https://mint-vietsub-api.YOUR-SUBDOMAIN.workers.dev";
+
+const params = new URLSearchParams(location.search);
+const showId = params.get('id');
+let epIndexFromUrl = parseInt(params.get('ep'), 10);
+if(isNaN(epIndexFromUrl)) epIndexFromUrl = 0;
+
+const statusEl = document.getElementById('status');
+const watchContent = document.getElementById('watch-content');
+const showTitleEl = document.getElementById('show-title');
+const epLabelEl = document.getElementById('ep-label');
+const playerWrap = document.getElementById('player-wrap');
+const epListEl = document.getElementById('ep-list');
+const epCountEl = document.getElementById('ep-count');
+
+let EPISODES = [];
+let currentIndex = 0;
+
+function extractVideoId(item){
+  if(item.guid && item.guid.includes('video:')) return item.guid.split('video:')[1];
+  const m = item.link.match(/v=([^&]+)/);
+  return m ? m[1] : null;
+}
+
+function playEpisode(index){
+  if(index < 0 || index >= EPISODES.length) return;
+  currentIndex = index;
+  const ep = EPISODES[index];
+
+  playerWrap.innerHTML = `<iframe id="yt-player" src="https://www.youtube.com/embed/${ep.id}?autoplay=1&enablejsapi=1" title="${ep.title.replace(/"/g,'&quot;')}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  epLabelEl.textContent = `Tập ${index + 1} / ${EPISODES.length} — ${ep.title}`;
+
+  document.querySelectorAll('.ep-item').forEach((el, i) => {
+    el.classList.toggle('active', i === index);
+  });
+  const activeEl = document.querySelector('.ep-item.active');
+  if(activeEl) activeEl.scrollIntoView({ block:'nearest' });
+
+  // Cập nhật URL không reload trang
+  const url = new URL(location.href);
+  url.searchParams.set('ep', index);
+  history.replaceState(null, '', url);
+
+  listenForEnd();
+}
+
+function listenForEnd(){
+  // Lắng nghe sự kiện kết thúc video qua YouTube IFrame API để tự chuyển tập
+  if(window.YT && window.YT.Player){
+    attachYTPlayer();
+  } else {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+    window.onYouTubeIframeAPIReady = attachYTPlayer;
+  }
+}
+
+function attachYTPlayer(){
+  try{
+    new YT.Player('yt-player', {
+      events: {
+        'onStateChange': (e) => {
+          if(e.data === YT.PlayerState.ENDED){
+            if(currentIndex < EPISODES.length - 1){
+              playEpisode(currentIndex + 1);
+            }
+          }
+        }
+      }
+    });
+  }catch(err){
+    console.warn('Không gắn được YouTube Player API:', err);
+  }
+}
+
+function renderEpisodeList(){
+  epCountEl.textContent = `${EPISODES.length} tập`;
+  epListEl.innerHTML = EPISODES.map((ep, i) => `
+    <div class="ep-item" data-index="${i}">
+      <img src="${ep.thumb}" alt="" loading="lazy">
+      <div class="ep-text">
+        <div class="ep-num">Tập ${i + 1}</div>
+        <div class="ep-title">${ep.title}</div>
+      </div>
+    </div>
+  `).join('');
+
+  epListEl.querySelectorAll('.ep-item').forEach(el => {
+    el.addEventListener('click', () => playEpisode(parseInt(el.dataset.index, 10)));
+  });
+}
+
+async function loadShow(){
+  if(!showId){
+    statusEl.innerHTML = 'Thiếu thông tin phim. <a href="index.html">Về trang chủ</a>.';
+    return;
+  }
+
+  try{
+    const res = await fetch(`${API_BASE}/api/shows`);
+    const data = await res.json();
+    if(!data.ok) throw new Error('Không lấy được danh sách phim');
+
+    const show = (data.shows || []).find(s => s.id === showId);
+    if(!show) throw new Error('Không tìm thấy phim này');
+
+    showTitleEl.textContent = show.title;
+
+    const playlistRss = `https://www.youtube.com/feeds/videos.xml?playlist_id=${show.playlistId}`;
+    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(playlistRss)}`;
+
+    const epRes = await fetch(proxyUrl);
+    const epData = await epRes.json();
+    if(epData.status !== 'ok' || !epData.items || epData.items.length === 0){
+      throw new Error('Không lấy được danh sách tập từ playlist này');
+    }
+
+    // RSS playlist trả về mới nhất trước -> đảo lại để tập 1 lên đầu
+    const items = epData.items.slice().reverse();
+
+    EPISODES = items.map(item => {
+      const id = extractVideoId(item);
+      return {
+        id,
+        title: item.title,
+        thumb: item.thumbnail || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+      };
+    }).filter(ep => ep.id);
+
+    if(EPISODES.length === 0) throw new Error('Playlist không có tập nào');
+
+    statusEl.style.display = 'none';
+    watchContent.style.display = 'block';
+
+    renderEpisodeList();
+    const startIndex = Math.min(Math.max(epIndexFromUrl, 0), EPISODES.length - 1);
+    playEpisode(startIndex);
+
+  }catch(err){
+    console.error(err);
+    statusEl.innerHTML = `Không tải được phim này. <a href="index.html">Quay lại trang chủ</a>.`;
+  }
+}
+
+loadShow();
+</script>
+
+</body>
+</html>

@@ -50,31 +50,12 @@
     border-bottom:1px solid var(--line);
     flex-wrap:wrap;
   }
-  .brand{
-    display:flex;
-    align-items:baseline;
-    gap:10px;
-  }
-  .brand-mark{
-    width:10px; height:10px;
-    background:var(--red);
-    display:inline-block;
-    transform:rotate(45deg);
-  }
-  .brand h1{
-    font-size:1.5rem;
-    margin:0;
-    letter-spacing:0.02em;
-    font-weight:700;
-  }
+  .brand{ display:flex; align-items:baseline; gap:10px; }
+  .brand-mark{ width:10px; height:10px; background:var(--red); display:inline-block; transform:rotate(45deg); }
+  .brand h1{ font-size:1.5rem; margin:0; letter-spacing:0.02em; font-weight:700; }
   .brand span{ color:var(--gold); }
 
-  .header-right{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    flex-wrap:wrap;
-  }
+  .header-right{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
 
   .search-box{ position:relative; }
   .search-box input{
@@ -141,19 +122,10 @@
 
   #hero-section{ padding-top:44px; }
   .hero-label{ color:var(--gold); font-size:0.85rem; margin-bottom:10px; }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.5fr 1fr;
-    gap:36px;
-    align-items:start;
-  }
+  .hero-grid{ display:grid; grid-template-columns:1.5fr 1fr; gap:36px; align-items:start; }
   .hero-player{
-    position:relative;
-    aspect-ratio:16/9;
-    background:#0a0807;
-    border:1px solid var(--line);
-    overflow:hidden;
-    cursor:pointer;
+    position:relative; aspect-ratio:16/9; background:#0a0807;
+    border:1px solid var(--line); overflow:hidden; cursor:pointer;
   }
   .hero-player iframe{ width:100%; height:100%; border:0; display:block; }
   .hero-player img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -163,12 +135,8 @@
 
   #list-section{ margin-top:64px; }
   .section-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    border-bottom:1px solid var(--line);
-    padding-bottom:14px;
-    margin-bottom:28px;
+    display:flex; align-items:baseline; justify-content:space-between;
+    border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:28px;
   }
   .section-head h2{ font-size:1.3rem; margin:0; }
   .section-head .count{ color:var(--ink-dim); font-size:0.85rem; }
@@ -197,34 +165,40 @@
     padding:3px 7px;
     border:1px solid var(--gold);
   }
-  .thumb-wrap .ep-badge{
-    position:absolute; left:8px; top:8px;
-    background:rgba(10,8,7,0.85);
-    color:var(--ink);
-    font-size:0.72rem;
-    padding:3px 8px;
-    border:1px solid var(--line);
-  }
   .card-body{ padding:14px 14px 16px; }
   .card-body h3{
-    font-size:0.98rem;
-    font-weight:500;
-    margin:0 0 8px;
-    line-height:1.4;
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
+    font-size:0.98rem; font-weight:500; margin:0 0 8px; line-height:1.4;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
   .card-body .date{ color:var(--ink-dim); font-size:0.78rem; }
 
-  .playlist-group{ margin-bottom:52px; }
-  .playlist-group-head{
-    display:flex; align-items:baseline; gap:12px;
-    margin-bottom:20px;
+  /* Grid phim (poster dọc) */
+  .show-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+    gap:24px 20px;
   }
-  .playlist-group-head h3{ font-size:1.15rem; margin:0; }
-  .playlist-group-head span{ color:var(--ink-dim); font-size:0.82rem; }
+  .show-card{
+    cursor:pointer;
+    border:1px solid var(--line);
+    background:var(--bg-raised);
+    transition:border-color 0.15s ease, transform 0.15s ease;
+  }
+  .show-card:hover{ border-color:var(--gold); transform:translateY(-2px); }
+  .show-poster{
+    position:relative; aspect-ratio:2/3; overflow:hidden; background:#0a0807;
+  }
+  .show-poster img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .show-poster .ep-tag{
+    position:absolute; left:0; bottom:0; right:0;
+    background:linear-gradient(to top, rgba(10,8,7,0.9), transparent);
+    color:var(--gold); font-size:0.75rem; padding:16px 10px 8px;
+  }
+  .show-card-body{ padding:10px 12px 14px; }
+  .show-card-body h3{
+    font-size:0.9rem; font-weight:500; margin:0;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
 
   #status{ color:var(--ink-dim); padding:60px 0; text-align:center; font-size:0.95rem; }
   #status a{ color:var(--gold); }
@@ -256,7 +230,7 @@
   <div class="header-right">
     <div class="search-box">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="search-input" placeholder="Tìm tên video…">
+      <input type="text" id="search-input" placeholder="Tìm tên video hoặc phim…">
     </div>
     <a class="subscribe" href="https://www.youtube.com/@Mintvietsub25?sub_confirmation=1" target="_blank" rel="noopener">Xem kênh gốc</a>
   </div>
@@ -264,7 +238,7 @@
 
 <nav class="tabs" id="tabs" style="display:none;">
   <button class="active" data-tab="latest">Mới nhất</button>
-  <button data-tab="playlists">Danh sách phát</button>
+  <button data-tab="shows">Danh sách phát</button>
 </nav>
 
 <main>
@@ -290,7 +264,13 @@
     <div id="empty-search">Không tìm thấy video nào khớp.</div>
   </section>
 
-  <section id="playlists-section" style="display:none;"></section>
+  <section id="shows-section" style="display:none;">
+    <div class="section-head">
+      <h2 class="serif">Danh sách phát</h2>
+      <span class="count" id="show-count"></span>
+    </div>
+    <div class="show-grid" id="show-grid"></div>
+  </section>
 
   <div id="status">Đang tải danh sách tập phim…</div>
 
@@ -306,14 +286,14 @@ const CHANNEL_ID = "UCw4qWOr8THZx4A410VSaXGw";
 const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
 const PROXY_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
 
-// ĐỔI địa chỉ này thành URL Worker thật của bạn sau khi deploy (xem hướng dẫn)
+// ĐỔI địa chỉ này thành URL Worker thật của bạn sau khi deploy
 const API_BASE = "https://mint-vietsub-api.YOUR-SUBDOMAIN.workers.dev";
 
 const statusEl = document.getElementById('status');
 const tabsEl = document.getElementById('tabs');
 const heroSection = document.getElementById('hero-section');
 const listSection = document.getElementById('list-section');
-const playlistsSection = document.getElementById('playlists-section');
+const showsSection = document.getElementById('shows-section');
 const heroPlayer = document.getElementById('hero-player');
 const heroTitle = document.getElementById('hero-title');
 const heroDate = document.getElementById('hero-date');
@@ -323,9 +303,11 @@ const countEl = document.getElementById('video-count');
 const listTitle = document.getElementById('list-title');
 const emptySearch = document.getElementById('empty-search');
 const searchInput = document.getElementById('search-input');
+const showGrid = document.getElementById('show-grid');
+const showCountEl = document.getElementById('show-count');
 
 let ALL_VIDEOS = [];
-let PLAYLISTS = [];
+let SHOWS = [];
 let currentTab = 'latest';
 
 function extractVideoId(item){
@@ -361,12 +343,11 @@ function setHeroFromVideo(v){
   heroPlayer.onclick = () => playInHero(v.id, v.title, formatDate(v.date), v.desc);
 }
 
-function cardHtml(v, epLabel){
+function cardHtml(v){
   return `
     <div class="card" onclick='playInHero(${JSON.stringify(v.id)}, ${JSON.stringify(v.title)}, ${JSON.stringify(formatDate(v.date))}, ${JSON.stringify(v.desc)})'>
       <div class="thumb-wrap">
         <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy">
-        ${epLabel ? `<span class="ep-badge">${epLabel}</span>` : ''}
         <span class="play-badge">▶ Xem</span>
       </div>
       <div class="card-body">
@@ -393,47 +374,45 @@ function renderLatest(filterText){
   grid.innerHTML = filtered.map(v => cardHtml(v)).join('');
 }
 
-function renderPlaylists(filterText){
-  if(PLAYLISTS.length === 0){
-    playlistsSection.innerHTML = `<div id="status" style="padding:60px 0;">Chưa có danh sách phát nào. Vào <a href="admin.html" style="color:var(--gold);">trang quản trị</a> để tạo.</div>`;
+function renderShows(filterText){
+  const filtered = filterText
+    ? SHOWS.filter(s => s.title.toLowerCase().includes(filterText.toLowerCase()))
+    : SHOWS;
+
+  showCountEl.textContent = `${filtered.length} phim`;
+
+  if(filtered.length === 0){
+    showGrid.innerHTML = `<div id="status" style="padding:60px 0;grid-column:1/-1;">
+      ${SHOWS.length === 0
+        ? `Chưa có phim nào. Vào <a href="admin.html" style="color:var(--gold);">trang quản trị</a> để thêm.`
+        : `Không tìm thấy phim khớp.`}
+    </div>`;
     return;
   }
 
-  const videoMap = {};
-  ALL_VIDEOS.forEach(v => videoMap[v.id] = v);
-
-  let html = '';
-  PLAYLISTS.forEach(pl => {
-    let vids = pl.videoIds.map(id => videoMap[id]).filter(Boolean);
-    if(filterText){
-      vids = vids.filter(v => v.title.toLowerCase().includes(filterText.toLowerCase()));
-      if(vids.length === 0) return;
-    }
-    html += `
-      <div class="playlist-group">
-        <div class="playlist-group-head">
-          <h3 class="serif">${esc(pl.title)}</h3>
-          <span>${vids.length} tập</span>
-        </div>
-        <div class="grid">
-          ${vids.map((v, i) => cardHtml(v, `Tập ${i+1}`)).join('')}
-        </div>
-      </div>`;
-  });
-
-  playlistsSection.innerHTML = html || `<div id="status" style="padding:60px 0;">Không tìm thấy video khớp trong danh sách phát.</div>`;
+  showGrid.innerHTML = filtered.map(s => `
+    <div class="show-card" onclick="location.href='watch.html?id=${encodeURIComponent(s.id)}'">
+      <div class="show-poster">
+        <img src="${s.poster || `https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg`}" alt="${esc(s.title)}" loading="lazy">
+        <div class="ep-tag">Xem ngay</div>
+      </div>
+      <div class="show-card-body">
+        <h3>${s.title}</h3>
+      </div>
+    </div>
+  `).join('');
 }
 
 function renderCurrentTab(){
   const filterText = searchInput.value.trim();
   if(currentTab === 'latest'){
     listSection.style.display = 'block';
-    playlistsSection.style.display = 'none';
+    showsSection.style.display = 'none';
     renderLatest(filterText);
   } else {
     listSection.style.display = 'none';
-    playlistsSection.style.display = 'block';
-    renderPlaylists(filterText);
+    showsSection.style.display = 'block';
+    renderShows(filterText);
   }
 }
 
@@ -448,14 +427,14 @@ document.getElementById('tabs').addEventListener('click', (e) => {
 
 searchInput.addEventListener('input', renderCurrentTab);
 
-async function loadPlaylists(){
+async function loadShows(){
   try{
-    const res = await fetch(`${API_BASE}/api/playlists`);
+    const res = await fetch(`${API_BASE}/api/shows`);
     const data = await res.json();
-    if(data.ok) PLAYLISTS = data.playlists || [];
+    if(data.ok) SHOWS = data.shows || [];
   }catch(err){
-    console.warn('Không tải được playlists (backend có thể chưa cấu hình):', err);
-    PLAYLISTS = [];
+    console.warn('Không tải được shows (backend có thể chưa cấu hình):', err);
+    SHOWS = [];
   }
 }
 
@@ -481,7 +460,7 @@ async function loadVideos(){
 
     if(ALL_VIDEOS.length === 0) throw new Error('Không có video nào');
 
-    await loadPlaylists();
+    await loadShows();
 
     statusEl.style.display = 'none';
     tabsEl.style.display = 'flex';

@@ -18,14 +18,8 @@
   }
   h1,h2,h3,.serif{ font-family:'Noto Serif', serif; }
 
-  /* LOGIN */
-  #login-screen{
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
-  }
-  .login-box{
-    background:var(--bg-raised); border:1px solid var(--line);
-    padding:40px; width:320px; text-align:center;
-  }
+  #login-screen{ min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .login-box{ background:var(--bg-raised); border:1px solid var(--line); padding:40px; width:320px; text-align:center; }
   .login-box h1{ font-size:1.3rem; margin:0 0 20px; }
   .login-box input{
     width:100%; padding:10px 12px; background:var(--bg);
@@ -39,97 +33,57 @@
   }
   .login-error{ color:var(--red); font-size:0.85rem; margin-top:10px; min-height:1em; }
 
-  /* APP */
-  #app{ display:none; max-width:1100px; margin:0 auto; padding:30px 5vw 80px; }
+  #app{ display:none; max-width:920px; margin:0 auto; padding:30px 5vw 80px; }
   header{
     display:flex; justify-content:space-between; align-items:center;
     border-bottom:1px solid var(--line); padding-bottom:20px; margin-bottom:30px;
   }
   header h1{ font-size:1.4rem; margin:0; }
   header a{ color:var(--gold); font-size:0.85rem; text-decoration:none; }
-  .save-bar{
-    display:flex; align-items:center; gap:14px; margin-bottom:30px;
-    background:var(--bg-raised); border:1px solid var(--line); padding:14px 18px;
-  }
-  .save-bar button{
-    background:var(--green); color:var(--bg); border:none; padding:10px 20px;
-    font-weight:600; cursor:pointer; font-family:inherit;
-  }
-  .save-bar button:disabled{ opacity:0.5; cursor:default; }
-  #save-status{ font-size:0.85rem; color:var(--ink-dim); }
 
-  .columns{ display:grid; grid-template-columns:1fr 1.3fr; gap:28px; align-items:start; }
-  .panel{ background:var(--bg-raised); border:1px solid var(--line); padding:20px; }
-  .panel h2{ font-size:1rem; margin:0 0 16px; }
+  .panel{ background:var(--bg-raised); border:1px solid var(--line); padding:22px; margin-bottom:24px; }
+  .panel h2{ font-size:1rem; margin:0 0 6px; }
+  .panel .hint{ color:var(--ink-dim); font-size:0.82rem; margin:0 0 18px; line-height:1.5; }
 
-  /* Source video list */
-  #source-search{
-    width:100%; padding:8px 10px; background:var(--bg); border:1px solid var(--line);
-    color:var(--ink); font-family:inherit; margin-bottom:12px; outline:none;
-  }
-  .source-list{ max-height:520px; overflow-y:auto; }
-  .source-item{
-    display:flex; gap:10px; padding:8px; border-bottom:1px solid var(--line);
-    cursor:grab; align-items:center;
-  }
-  .source-item img{ width:70px; aspect-ratio:16/9; object-fit:cover; flex-shrink:0; }
-  .source-item .title{ font-size:0.82rem; line-height:1.35; }
-  .source-item button{
-    background:none; border:1px solid var(--gold); color:var(--gold);
-    font-size:0.72rem; padding:4px 8px; cursor:pointer; white-space:nowrap;
-    font-family:inherit; margin-left:auto; flex-shrink:0;
-  }
-
-  /* Playlist manager */
-  .new-playlist-row{ display:flex; gap:8px; margin-bottom:18px; }
-  .new-playlist-row input{
-    flex:1; padding:9px 12px; background:var(--bg); border:1px solid var(--line);
+  .form-row{ margin-bottom:14px; }
+  .form-row label{ display:block; font-size:0.82rem; color:var(--ink-dim); margin-bottom:6px; }
+  .form-row input{
+    width:100%; padding:10px 12px; background:var(--bg); border:1px solid var(--line);
     color:var(--ink); font-family:inherit; outline:none;
   }
-  .new-playlist-row button{
-    background:var(--gold); color:var(--bg); border:none; padding:0 16px;
+  .form-row input:focus{ border-color:var(--gold); }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+  .btn-primary{
+    background:var(--gold); color:var(--bg); border:none; padding:10px 20px;
     font-weight:600; cursor:pointer; font-family:inherit;
   }
+  .btn-primary:disabled{ opacity:0.5; cursor:default; }
 
-  .playlist-block{ border:1px solid var(--line); margin-bottom:16px; }
-  .playlist-block-head{
-    display:flex; align-items:center; gap:10px; padding:12px 14px;
-    background:rgba(255,255,255,0.02);
-  }
-  .playlist-block-head input.pl-title{
-    flex:1; background:none; border:none; color:var(--ink);
-    font-family:'Noto Serif',serif; font-size:1rem; outline:none;
-    border-bottom:1px dashed transparent;
-  }
-  .playlist-block-head input.pl-title:focus{ border-bottom-color:var(--gold); }
-  .playlist-block-head .del-playlist{
-    background:none; border:1px solid var(--red); color:var(--red);
-    font-size:0.75rem; padding:5px 10px; cursor:pointer; font-family:inherit;
-  }
-  .pl-videos{ padding:10px 14px 14px; }
-  .pl-video-row{
-    display:flex; align-items:center; gap:10px; padding:7px 0;
+  .show-list{ display:flex; flex-direction:column; gap:0; }
+  .show-row{
+    display:flex; align-items:center; gap:14px; padding:14px 0;
     border-bottom:1px solid var(--line);
   }
-  .pl-video-row:last-child{ border-bottom:none; }
-  .pl-video-row .ep-num{
-    color:var(--gold); font-size:0.8rem; width:44px; flex-shrink:0;
-  }
-  .pl-video-row img{ width:60px; aspect-ratio:16/9; object-fit:cover; flex-shrink:0; }
-  .pl-video-row .title{ font-size:0.8rem; flex:1; line-height:1.3; }
-  .pl-video-row .move-btns{ display:flex; flex-direction:column; gap:2px; }
-  .pl-video-row .move-btns button{
+  .show-row:last-child{ border-bottom:none; }
+  .show-row img{ width:80px; aspect-ratio:2/3; object-fit:cover; background:var(--bg); flex-shrink:0; }
+  .show-row .info{ flex:1; min-width:0; }
+  .show-row .info .name{ font-weight:600; margin-bottom:4px; }
+  .show-row .info .pid{ color:var(--ink-dim); font-size:0.78rem; word-break:break-all; }
+  .show-row .actions{ display:flex; gap:8px; flex-shrink:0; }
+  .show-row button{
     background:none; border:1px solid var(--line); color:var(--ink-dim);
-    font-size:0.65rem; width:20px; height:18px; cursor:pointer; line-height:1;
+    padding:6px 12px; cursor:pointer; font-family:inherit; font-size:0.8rem;
   }
-  .pl-video-row .remove-btn{
-    background:none; border:none; color:var(--red); cursor:pointer; font-size:1rem;
-  }
-  .pl-empty{ color:var(--ink-dim); font-size:0.82rem; padding:10px 0; }
+  .show-row button.del{ border-color:var(--red); color:var(--red); }
+  .show-row button:hover{ border-color:var(--gold); color:var(--gold); }
+  .show-row button.del:hover{ border-color:var(--red); color:var(--red); background:rgba(199,68,46,0.1); }
 
-  @media (max-width:860px){
-    .columns{ grid-template-columns:1fr; }
+  #save-bar{
+    display:flex; align-items:center; gap:14px; margin-top:20px;
   }
+  #save-status{ font-size:0.85rem; color:var(--ink-dim); }
+  .empty-msg{ color:var(--ink-dim); font-size:0.88rem; padding:10px 0; }
 </style>
 </head>
 <body>
@@ -145,43 +99,50 @@
 
 <div id="app">
   <header>
-    <h1 class="serif">Quản trị Danh sách phát</h1>
+    <h1 class="serif">Quản trị Phim</h1>
     <a href="index.html">← Về trang chính</a>
   </header>
 
-  <div class="save-bar">
-    <button id="save-btn">Lưu thay đổi</button>
-    <span id="save-status"></span>
+  <div class="panel">
+    <h2>Thêm phim mới</h2>
+    <p class="hint">
+      Lấy Playlist ID từ YouTube: mở playlist trên YouTube, copy phần sau <code>list=</code> trong link
+      (vd: youtube.com/playlist?list=<strong>PLxxxxxxxxxxxx</strong>). Danh sách tập sẽ tự lấy theo đúng thứ tự trong playlist đó (tối đa 15 tập gần nhất).
+    </p>
+    <div class="form-row">
+      <label>Tên phim</label>
+      <input type="text" id="show-title" placeholder="VD: Khế Ước Vô Hạn">
+    </div>
+    <div class="form-grid">
+      <div class="form-row">
+        <label>Playlist ID</label>
+        <input type="text" id="show-playlist" placeholder="PLxxxxxxxxxxxxxxxxxx">
+      </div>
+      <div class="form-row">
+        <label>Ảnh poster (URL, không bắt buộc)</label>
+        <input type="text" id="show-poster" placeholder="Để trống sẽ dùng ảnh tập đầu">
+      </div>
+    </div>
+    <button class="btn-primary" id="add-show-btn">+ Thêm phim</button>
   </div>
 
-  <div class="columns">
-    <div class="panel">
-      <h2>Video từ kênh (kéo hoặc bấm "Thêm →")</h2>
-      <input type="text" id="source-search" placeholder="Tìm video…">
-      <div class="source-list" id="source-list"></div>
-    </div>
+  <div class="panel">
+    <h2>Danh sách phim hiện có</h2>
+    <div class="show-list" id="show-list"></div>
+    <div class="empty-msg" id="empty-msg" style="display:none;">Chưa có phim nào. Thêm ở form phía trên.</div>
 
-    <div class="panel">
-      <h2>Danh sách phát</h2>
-      <div class="new-playlist-row">
-        <input type="text" id="new-playlist-name" placeholder="Tên phim mới, vd: Phàm Nhân Tu Tiên">
-        <button id="add-playlist-btn">+ Tạo</button>
-      </div>
-      <div id="playlist-container"></div>
+    <div id="save-bar">
+      <button class="btn-primary" id="save-btn">Lưu thay đổi</button>
+      <span id="save-status"></span>
     </div>
   </div>
 </div>
 
 <script>
-const CHANNEL_ID = "UCw4qWOr8THZx4A410VSaXGw";
-const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-const PROXY_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
-
 // ĐỔI địa chỉ này thành URL Worker thật của bạn sau khi deploy
 const API_BASE = "https://mint-vietsub-api.YOUR-SUBDOMAIN.workers.dev";
 
-let ALL_VIDEOS = [];
-let PLAYLISTS = [];   // [{ id, title, videoIds: [] }]
+let SHOWS = []; // [{ id, title, poster, playlistId }]
 let adminPassword = '';
 
 const loginScreen = document.getElementById('login-screen');
@@ -189,20 +150,23 @@ const appEl = document.getElementById('app');
 const passwordInput = document.getElementById('password-input');
 const loginBtn = document.getElementById('login-btn');
 const loginError = document.getElementById('login-error');
-const sourceList = document.getElementById('source-list');
-const sourceSearch = document.getElementById('source-search');
-const playlistContainer = document.getElementById('playlist-container');
-const newPlaylistName = document.getElementById('new-playlist-name');
-const addPlaylistBtn = document.getElementById('add-playlist-btn');
+const showList = document.getElementById('show-list');
+const emptyMsg = document.getElementById('empty-msg');
+const showTitle = document.getElementById('show-title');
+const showPlaylist = document.getElementById('show-playlist');
+const showPoster = document.getElementById('show-poster');
+const addShowBtn = document.getElementById('add-show-btn');
 const saveBtn = document.getElementById('save-btn');
 const saveStatus = document.getElementById('save-status');
 
-function extractVideoId(item){
-  if(item.guid && item.guid.includes('video:')) return item.guid.split('video:')[1];
-  const m = item.link.match(/v=([^&]+)/);
-  return m ? m[1] : null;
-}
 function esc(str){ return (str || '').replace(/"/g, '&quot;'); }
+
+function extractPlaylistId(input){
+  const trimmed = input.trim();
+  const m = trimmed.match(/[?&]list=([^&]+)/);
+  if(m) return m[1];
+  return trimmed; // đã là ID thuần
+}
 
 async function login(){
   const pw = passwordInput.value;
@@ -231,11 +195,9 @@ async function login(){
   loginBtn.disabled = false;
   loginBtn.textContent = 'Đăng nhập';
 }
-
 loginBtn.addEventListener('click', login);
 passwordInput.addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
 
-// Auto-login nếu đã đăng nhập trong phiên này
 window.addEventListener('load', () => {
   const saved = sessionStorage.getItem('mint_admin_pw');
   if(saved){
@@ -245,192 +207,75 @@ window.addEventListener('load', () => {
 });
 
 async function initApp(){
-  await loadVideos();
-  await loadPlaylists();
-  renderSourceList();
-  renderPlaylists();
+  await loadShows();
+  renderShows();
 }
 
-async function loadVideos(){
-  const res = await fetch(PROXY_URL);
-  const data = await res.json();
-  ALL_VIDEOS = (data.items || []).map(item => {
-    const id = extractVideoId(item);
-    return {
-      id,
-      title: item.title,
-      date: item.pubDate,
-      thumb: item.thumbnail || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
-    };
-  }).filter(v => v.id);
+async function loadShows(){
+  try{
+    const res = await fetch(`${API_BASE}/api/shows`);
+    const data = await res.json();
+    SHOWS = data.ok ? (data.shows || []) : [];
+  }catch(err){
+    SHOWS = [];
+  }
 }
 
-async function loadPlaylists(){
-  const res = await fetch(`${API_BASE}/api/playlists`);
-  const data = await res.json();
-  PLAYLISTS = data.ok ? (data.playlists || []) : [];
-}
-
-function renderSourceList(filterText){
-  const filtered = filterText
-    ? ALL_VIDEOS.filter(v => v.title.toLowerCase().includes(filterText.toLowerCase()))
-    : ALL_VIDEOS;
-
-  sourceList.innerHTML = filtered.map(v => `
-    <div class="source-item" draggable="true" data-video-id="${v.id}">
-      <img src="${v.thumb}" alt="">
-      <div class="title">${v.title}</div>
-      <button data-add="${v.id}">Thêm →</button>
-    </div>
-  `).join('');
-
-  // Kéo-thả
-  sourceList.querySelectorAll('.source-item').forEach(el => {
-    el.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', el.dataset.videoId);
-    });
-  });
-
-  // Nút "Thêm →" — thêm vào playlist đầu tiên nếu có, hoặc báo cần tạo playlist trước
-  sourceList.querySelectorAll('button[data-add]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if(PLAYLISTS.length === 0){
-        alert('Tạo một danh sách phát trước đã nhé.');
-        return;
-      }
-      const targetId = PLAYLISTS.length === 1 ? PLAYLISTS[0].id : promptChoosePlaylist();
-      if(!targetId) return;
-      addVideoToPlaylist(targetId, btn.dataset.add);
-    });
-  });
-}
-
-function promptChoosePlaylist(){
-  const names = PLAYLISTS.map((p, i) => `${i+1}. ${p.title}`).join('\n');
-  const choice = prompt(`Thêm vào danh sách nào?\n${names}\n\nNhập số thứ tự:`);
-  const idx = parseInt(choice, 10) - 1;
-  if(isNaN(idx) || !PLAYLISTS[idx]) return null;
-  return PLAYLISTS[idx].id;
-}
-
-function addVideoToPlaylist(playlistId, videoId){
-  const pl = PLAYLISTS.find(p => p.id === playlistId);
-  if(!pl) return;
-  if(pl.videoIds.includes(videoId)){
-    alert('Video này đã có trong danh sách rồi.');
+function renderShows(){
+  if(SHOWS.length === 0){
+    showList.innerHTML = '';
+    emptyMsg.style.display = 'block';
     return;
   }
-  pl.videoIds.push(videoId);
-  renderPlaylists();
-  markUnsaved();
-}
-
-function renderPlaylists(){
-  if(PLAYLISTS.length === 0){
-    playlistContainer.innerHTML = `<p style="color:var(--ink-dim);font-size:0.88rem;">Chưa có danh sách phát nào. Tạo mới ở ô trên.</p>`;
-    return;
-  }
-
-  const videoMap = {};
-  ALL_VIDEOS.forEach(v => videoMap[v.id] = v);
-
-  playlistContainer.innerHTML = PLAYLISTS.map(pl => `
-    <div class="playlist-block" data-playlist-id="${pl.id}">
-      <div class="playlist-block-head">
-        <input class="pl-title" value="${esc(pl.title)}" data-playlist-id="${pl.id}">
-        <button class="del-playlist" data-del-playlist="${pl.id}">Xoá</button>
+  emptyMsg.style.display = 'none';
+  showList.innerHTML = SHOWS.map(s => `
+    <div class="show-row" data-id="${s.id}">
+      <img src="${s.poster || `https://i.ytimg.com/vi/placeholder/hqdefault.jpg`}" alt="" onerror="this.style.visibility='hidden'">
+      <div class="info">
+        <div class="name">${esc(s.title)}</div>
+        <div class="pid">Playlist: ${esc(s.playlistId)}</div>
       </div>
-      <div class="pl-videos" data-drop-playlist="${pl.id}">
-        ${pl.videoIds.length === 0
-          ? '<div class="pl-empty">Kéo video từ bên trái vào đây, hoặc bấm "Thêm →".</div>'
-          : pl.videoIds.map((vid, i) => {
-              const v = videoMap[vid];
-              if(!v) return '';
-              return `
-                <div class="pl-video-row" data-video-id="${vid}">
-                  <span class="ep-num">Tập ${i+1}</span>
-                  <img src="${v.thumb}" alt="">
-                  <span class="title">${v.title}</span>
-                  <div class="move-btns">
-                    <button data-move="up" ${i===0 ? 'disabled' : ''}>▲</button>
-                    <button data-move="down" ${i===pl.videoIds.length-1 ? 'disabled' : ''}>▼</button>
-                  </div>
-                  <button class="remove-btn" data-remove="${vid}" title="Bỏ khỏi danh sách">✕</button>
-                </div>`;
-            }).join('')
-        }
+      <div class="actions">
+        <button class="del" data-del="${s.id}">Xoá</button>
       </div>
     </div>
   `).join('');
 
-  // Đổi tên playlist
-  playlistContainer.querySelectorAll('.pl-title').forEach(input => {
-    input.addEventListener('input', () => {
-      const pl = PLAYLISTS.find(p => p.id === input.dataset.playlistId);
-      if(pl){ pl.title = input.value; markUnsaved(); }
-    });
-  });
-
-  // Xoá playlist
-  playlistContainer.querySelectorAll('[data-del-playlist]').forEach(btn => {
+  showList.querySelectorAll('[data-del]').forEach(btn => {
     btn.addEventListener('click', () => {
-      if(!confirm('Xoá danh sách phát này?')) return;
-      PLAYLISTS = PLAYLISTS.filter(p => p.id !== btn.dataset.delPlaylist);
-      renderPlaylists();
+      if(!confirm('Xoá phim này khỏi danh sách?')) return;
+      SHOWS = SHOWS.filter(s => s.id !== btn.dataset.del);
+      renderShows();
       markUnsaved();
-    });
-  });
-
-  // Xoá video khỏi playlist
-  playlistContainer.querySelectorAll('[data-remove]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const block = btn.closest('.playlist-block');
-      const pl = PLAYLISTS.find(p => p.id === block.dataset.playlistId);
-      pl.videoIds = pl.videoIds.filter(id => id !== btn.dataset.remove);
-      renderPlaylists();
-      markUnsaved();
-    });
-  });
-
-  // Sắp xếp lên/xuống
-  playlistContainer.querySelectorAll('[data-move]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const row = btn.closest('.pl-video-row');
-      const block = btn.closest('.playlist-block');
-      const pl = PLAYLISTS.find(p => p.id === block.dataset.playlistId);
-      const vid = row.dataset.videoId;
-      const idx = pl.videoIds.indexOf(vid);
-      const dir = btn.dataset.move === 'up' ? -1 : 1;
-      const newIdx = idx + dir;
-      if(newIdx < 0 || newIdx >= pl.videoIds.length) return;
-      [pl.videoIds[idx], pl.videoIds[newIdx]] = [pl.videoIds[newIdx], pl.videoIds[idx]];
-      renderPlaylists();
-      markUnsaved();
-    });
-  });
-
-  // Vùng thả (drop zone)
-  playlistContainer.querySelectorAll('[data-drop-playlist]').forEach(zone => {
-    zone.addEventListener('dragover', e => e.preventDefault());
-    zone.addEventListener('drop', e => {
-      e.preventDefault();
-      const videoId = e.dataTransfer.getData('text/plain');
-      addVideoToPlaylist(zone.dataset.dropPlaylist, videoId);
     });
   });
 }
 
-addPlaylistBtn.addEventListener('click', () => {
-  const name = newPlaylistName.value.trim();
-  if(!name) return;
-  PLAYLISTS.push({ id: 'pl_' + Date.now(), title: name, videoIds: [] });
-  newPlaylistName.value = '';
-  renderPlaylists();
+addShowBtn.addEventListener('click', () => {
+  const title = showTitle.value.trim();
+  const rawPlaylist = showPlaylist.value.trim();
+  const poster = showPoster.value.trim();
+
+  if(!title || !rawPlaylist){
+    alert('Vui lòng nhập tên phim và Playlist ID.');
+    return;
+  }
+  const playlistId = extractPlaylistId(rawPlaylist);
+
+  SHOWS.push({
+    id: 'show_' + Date.now(),
+    title,
+    playlistId,
+    poster: poster || ''
+  });
+
+  showTitle.value = '';
+  showPlaylist.value = '';
+  showPoster.value = '';
+
+  renderShows();
   markUnsaved();
 });
-newPlaylistName.addEventListener('keydown', e => { if(e.key === 'Enter') addPlaylistBtn.click(); });
-
-sourceSearch.addEventListener('input', () => renderSourceList(sourceSearch.value.trim()));
 
 function markUnsaved(){
   saveStatus.textContent = 'Có thay đổi chưa lưu';
@@ -442,13 +287,13 @@ saveBtn.addEventListener('click', async () => {
   saveStatus.textContent = 'Đang lưu…';
   saveStatus.style.color = 'var(--ink-dim)';
   try{
-    const res = await fetch(`${API_BASE}/api/playlists`, {
+    const res = await fetch(`${API_BASE}/api/shows`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPassword
       },
-      body: JSON.stringify({ playlists: PLAYLISTS })
+      body: JSON.stringify({ shows: SHOWS })
     });
     const data = await res.json();
     if(data.ok){
