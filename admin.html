@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị — Mint Vietsub</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@500;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14100f; --bg-raised:#1f1915; --line:#3a2f28;
+    --ink:#ede6dc; --ink-dim:#a89c8d; --red:#c7442e; --gold:#c9a363;
+    --green:#5a9367;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Be Vietnam Pro', sans-serif;
+  }
+  h1,h2,h3,.serif{ font-family:'Noto Serif', serif; }
+
+  /* LOGIN */
+  #login-screen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+  }
+  .login-box{
+    background:var(--bg-raised); border:1px solid var(--line);
+    padding:40px; width:320px; text-align:center;
+  }
+  .login-box h1{ font-size:1.3rem; margin:0 0 20px; }
+  .login-box input{
+    width:100%; padding:10px 12px; background:var(--bg);
+    border:1px solid var(--line); color:var(--ink); font-family:inherit;
+    margin-bottom:14px; outline:none;
+  }
+  .login-box input:focus{ border-color:var(--gold); }
+  .login-box button{
+    width:100%; padding:10px; background:var(--red); color:var(--bg);
+    border:none; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  .login-error{ color:var(--red); font-size:0.85rem; margin-top:10px; min-height:1em; }
+
+  /* APP */
+  #app{ display:none; max-width:1100px; margin:0 auto; padding:30px 5vw 80px; }
+  header{
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid var(--line); padding-bottom:20px; margin-bottom:30px;
+  }
+  header h1{ font-size:1.4rem; margin:0; }
+  header a{ color:var(--gold); font-size:0.85rem; text-decoration:none; }
+  .save-bar{
+    display:flex; align-items:center; gap:14px; margin-bottom:30px;
+    background:var(--bg-raised); border:1px solid var(--line); padding:14px 18px;
+  }
+  .save-bar button{
+    background:var(--green); color:var(--bg); border:none; padding:10px 20px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  .save-bar button:disabled{ opacity:0.5; cursor:default; }
+  #save-status{ font-size:0.85rem; color:var(--ink-dim); }
+
+  .columns{ display:grid; grid-template-columns:1fr 1.3fr; gap:28px; align-items:start; }
+  .panel{ background:var(--bg-raised); border:1px solid var(--line); padding:20px; }
+  .panel h2{ font-size:1rem; margin:0 0 16px; }
+
+  /* Source video list */
+  #source-search{
+    width:100%; padding:8px 10px; background:var(--bg); border:1px solid var(--line);
+    color:var(--ink); font-family:inherit; margin-bottom:12px; outline:none;
+  }
+  .source-list{ max-height:520px; overflow-y:auto; }
+  .source-item{
+    display:flex; gap:10px; padding:8px; border-bottom:1px solid var(--line);
+    cursor:grab; align-items:center;
+  }
+  .source-item img{ width:70px; aspect-ratio:16/9; object-fit:cover; flex-shrink:0; }
+  .source-item .title{ font-size:0.82rem; line-height:1.35; }
+  .source-item button{
+    background:none; border:1px solid var(--gold); color:var(--gold);
+    font-size:0.72rem; padding:4px 8px; cursor:pointer; white-space:nowrap;
+    font-family:inherit; margin-left:auto; flex-shrink:0;
+  }
+
+  /* Playlist manager */
+  .new-playlist-row{ display:flex; gap:8px; margin-bottom:18px; }
+  .new-playlist-row input{
+    flex:1; padding:9px 12px; background:var(--bg); border:1px solid var(--line);
+    color:var(--ink); font-family:inherit; outline:none;
+  }
+  .new-playlist-row button{
+    background:var(--gold); color:var(--bg); border:none; padding:0 16px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+  }
+
+  .playlist-block{ border:1px solid var(--line); margin-bottom:16px; }
+  .playlist-block-head{
+    display:flex; align-items:center; gap:10px; padding:12px 14px;
+    background:rgba(255,255,255,0.02);
+  }
+  .playlist-block-head input.pl-title{
+    flex:1; background:none; border:none; color:var(--ink);
+    font-family:'Noto Serif',serif; font-size:1rem; outline:none;
+    border-bottom:1px dashed transparent;
+  }
+  .playlist-block-head input.pl-title:focus{ border-bottom-color:var(--gold); }
+  .playlist-block-head .del-playlist{
+    background:none; border:1px solid var(--red); color:var(--red);
+    font-size:0.75rem; padding:5px 10px; cursor:pointer; font-family:inherit;
+  }
+  .pl-videos{ padding:10px 14px 14px; }
+  .pl-video-row{
+    display:flex; align-items:center; gap:10px; padding:7px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .pl-video-row:last-child{ border-bottom:none; }
+  .pl-video-row .ep-num{
+    color:var(--gold); font-size:0.8rem; width:44px; flex-shrink:0;
+  }
+  .pl-video-row img{ width:60px; aspect-ratio:16/9; object-fit:cover; flex-shrink:0; }
+  .pl-video-row .title{ font-size:0.8rem; flex:1; line-height:1.3; }
+  .pl-video-row .move-btns{ display:flex; flex-direction:column; gap:2px; }
+  .pl-video-row .move-btns button{
+    background:none; border:1px solid var(--line); color:var(--ink-dim);
+    font-size:0.65rem; width:20px; height:18px; cursor:pointer; line-height:1;
+  }
+  .pl-video-row .remove-btn{
+    background:none; border:none; color:var(--red); cursor:pointer; font-size:1rem;
+  }
+  .pl-empty{ color:var(--ink-dim); font-size:0.82rem; padding:10px 0; }
+
+  @media (max-width:860px){
+    .columns{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <h1 class="serif">Đăng nhập quản trị</h1>
+    <input type="password" id="password-input" placeholder="Mật khẩu admin">
+    <button id="login-btn">Đăng nhập</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <h1 class="serif">Quản trị Danh sách phát</h1>
+    <a href="index.html">← Về trang chính</a>
+  </header>
+
+  <div class="save-bar">
+    <button id="save-btn">Lưu thay đổi</button>
+    <span id="save-status"></span>
+  </div>
+
+  <div class="columns">
+    <div class="panel">
+      <h2>Video từ kênh (kéo hoặc bấm "Thêm →")</h2>
+      <input type="text" id="source-search" placeholder="Tìm video…">
+      <div class="source-list" id="source-list"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Danh sách phát</h2>
+      <div class="new-playlist-row">
+        <input type="text" id="new-playlist-name" placeholder="Tên phim mới, vd: Phàm Nhân Tu Tiên">
+        <button id="add-playlist-btn">+ Tạo</button>
+      </div>
+      <div id="playlist-container"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHANNEL_ID = "UCw4qWOr8THZx4A410VSaXGw";
+const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+const PROXY_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
+
+// ĐỔI địa chỉ này thành URL Worker thật của bạn sau khi deploy
+const API_BASE = "https://mint-vietsub-api.YOUR-SUBDOMAIN.workers.dev";
+
+let ALL_VIDEOS = [];
+let PLAYLISTS = [];   // [{ id, title, videoIds: [] }]
+let adminPassword = '';
+
+const loginScreen = document.getElementById('login-screen');
+const appEl = document.getElementById('app');
+const passwordInput = document.getElementById('password-input');
+const loginBtn = document.getElementById('login-btn');
+const loginError = document.getElementById('login-error');
+const sourceList = document.getElementById('source-list');
+const sourceSearch = document.getElementById('source-search');
+const playlistContainer = document.getElementById('playlist-container');
+const newPlaylistName = document.getElementById('new-playlist-name');
+const addPlaylistBtn = document.getElementById('add-playlist-btn');
+const saveBtn = document.getElementById('save-btn');
+const saveStatus = document.getElementById('save-status');
+
+function extractVideoId(item){
+  if(item.guid && item.guid.includes('video:')) return item.guid.split('video:')[1];
+  const m = item.link.match(/v=([^&]+)/);
+  return m ? m[1] : null;
+}
+function esc(str){ return (str || '').replace(/"/g, '&quot;'); }
+
+async function login(){
+  const pw = passwordInput.value;
+  loginError.textContent = '';
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Đang kiểm tra…';
+  try{
+    const res = await fetch(`${API_BASE}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    });
+    const data = await res.json();
+    if(data.ok){
+      adminPassword = pw;
+      sessionStorage.setItem('mint_admin_pw', pw);
+      loginScreen.style.display = 'none';
+      appEl.style.display = 'block';
+      initApp();
+    } else {
+      loginError.textContent = data.error || 'Sai mật khẩu';
+    }
+  }catch(err){
+    loginError.textContent = 'Không kết nối được backend. Kiểm tra API_BASE đã đúng URL Worker chưa.';
+  }
+  loginBtn.disabled = false;
+  loginBtn.textContent = 'Đăng nhập';
+}
+
+loginBtn.addEventListener('click', login);
+passwordInput.addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
+
+// Auto-login nếu đã đăng nhập trong phiên này
+window.addEventListener('load', () => {
+  const saved = sessionStorage.getItem('mint_admin_pw');
+  if(saved){
+    passwordInput.value = saved;
+    login();
+  }
+});
+
+async function initApp(){
+  await loadVideos();
+  await loadPlaylists();
+  renderSourceList();
+  renderPlaylists();
+}
+
+async function loadVideos(){
+  const res = await fetch(PROXY_URL);
+  const data = await res.json();
+  ALL_VIDEOS = (data.items || []).map(item => {
+    const id = extractVideoId(item);
+    return {
+      id,
+      title: item.title,
+      date: item.pubDate,
+      thumb: item.thumbnail || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+    };
+  }).filter(v => v.id);
+}
+
+async function loadPlaylists(){
+  const res = await fetch(`${API_BASE}/api/playlists`);
+  const data = await res.json();
+  PLAYLISTS = data.ok ? (data.playlists || []) : [];
+}
+
+function renderSourceList(filterText){
+  const filtered = filterText
+    ? ALL_VIDEOS.filter(v => v.title.toLowerCase().includes(filterText.toLowerCase()))
+    : ALL_VIDEOS;
+
+  sourceList.innerHTML = filtered.map(v => `
+    <div class="source-item" draggable="true" data-video-id="${v.id}">
+      <img src="${v.thumb}" alt="">
+      <div class="title">${v.title}</div>
+      <button data-add="${v.id}">Thêm →</button>
+    </div>
+  `).join('');
+
+  // Kéo-thả
+  sourceList.querySelectorAll('.source-item').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', el.dataset.videoId);
+    });
+  });
+
+  // Nút "Thêm →" — thêm vào playlist đầu tiên nếu có, hoặc báo cần tạo playlist trước
+  sourceList.querySelectorAll('button[data-add]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(PLAYLISTS.length === 0){
+        alert('Tạo một danh sách phát trước đã nhé.');
+        return;
+      }
+      const targetId = PLAYLISTS.length === 1 ? PLAYLISTS[0].id : promptChoosePlaylist();
+      if(!targetId) return;
+      addVideoToPlaylist(targetId, btn.dataset.add);
+    });
+  });
+}
+
+function promptChoosePlaylist(){
+  const names = PLAYLISTS.map((p, i) => `${i+1}. ${p.title}`).join('\n');
+  const choice = prompt(`Thêm vào danh sách nào?\n${names}\n\nNhập số thứ tự:`);
+  const idx = parseInt(choice, 10) - 1;
+  if(isNaN(idx) || !PLAYLISTS[idx]) return null;
+  return PLAYLISTS[idx].id;
+}
+
+function addVideoToPlaylist(playlistId, videoId){
+  const pl = PLAYLISTS.find(p => p.id === playlistId);
+  if(!pl) return;
+  if(pl.videoIds.includes(videoId)){
+    alert('Video này đã có trong danh sách rồi.');
+    return;
+  }
+  pl.videoIds.push(videoId);
+  renderPlaylists();
+  markUnsaved();
+}
+
+function renderPlaylists(){
+  if(PLAYLISTS.length === 0){
+    playlistContainer.innerHTML = `<p style="color:var(--ink-dim);font-size:0.88rem;">Chưa có danh sách phát nào. Tạo mới ở ô trên.</p>`;
+    return;
+  }
+
+  const videoMap = {};
+  ALL_VIDEOS.forEach(v => videoMap[v.id] = v);
+
+  playlistContainer.innerHTML = PLAYLISTS.map(pl => `
+    <div class="playlist-block" data-playlist-id="${pl.id}">
+      <div class="playlist-block-head">
+        <input class="pl-title" value="${esc(pl.title)}" data-playlist-id="${pl.id}">
+        <button class="del-playlist" data-del-playlist="${pl.id}">Xoá</button>
+      </div>
+      <div class="pl-videos" data-drop-playlist="${pl.id}">
+        ${pl.videoIds.length === 0
+          ? '<div class="pl-empty">Kéo video từ bên trái vào đây, hoặc bấm "Thêm →".</div>'
+          : pl.videoIds.map((vid, i) => {
+              const v = videoMap[vid];
+              if(!v) return '';
+              return `
+                <div class="pl-video-row" data-video-id="${vid}">
+                  <span class="ep-num">Tập ${i+1}</span>
+                  <img src="${v.thumb}" alt="">
+                  <span class="title">${v.title}</span>
+                  <div class="move-btns">
+                    <button data-move="up" ${i===0 ? 'disabled' : ''}>▲</button>
+                    <button data-move="down" ${i===pl.videoIds.length-1 ? 'disabled' : ''}>▼</button>
+                  </div>
+                  <button class="remove-btn" data-remove="${vid}" title="Bỏ khỏi danh sách">✕</button>
+                </div>`;
+            }).join('')
+        }
+      </div>
+    </div>
+  `).join('');
+
+  // Đổi tên playlist
+  playlistContainer.querySelectorAll('.pl-title').forEach(input => {
+    input.addEventListener('input', () => {
+      const pl = PLAYLISTS.find(p => p.id === input.dataset.playlistId);
+      if(pl){ pl.title = input.value; markUnsaved(); }
+    });
+  });
+
+  // Xoá playlist
+  playlistContainer.querySelectorAll('[data-del-playlist]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(!confirm('Xoá danh sách phát này?')) return;
+      PLAYLISTS = PLAYLISTS.filter(p => p.id !== btn.dataset.delPlaylist);
+      renderPlaylists();
+      markUnsaved();
+    });
+  });
+
+  // Xoá video khỏi playlist
+  playlistContainer.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.playlist-block');
+      const pl = PLAYLISTS.find(p => p.id === block.dataset.playlistId);
+      pl.videoIds = pl.videoIds.filter(id => id !== btn.dataset.remove);
+      renderPlaylists();
+      markUnsaved();
+    });
+  });
+
+  // Sắp xếp lên/xuống
+  playlistContainer.querySelectorAll('[data-move]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const row = btn.closest('.pl-video-row');
+      const block = btn.closest('.playlist-block');
+      const pl = PLAYLISTS.find(p => p.id === block.dataset.playlistId);
+      const vid = row.dataset.videoId;
+      const idx = pl.videoIds.indexOf(vid);
+      const dir = btn.dataset.move === 'up' ? -1 : 1;
+      const newIdx = idx + dir;
+      if(newIdx < 0 || newIdx >= pl.videoIds.length) return;
+      [pl.videoIds[idx], pl.videoIds[newIdx]] = [pl.videoIds[newIdx], pl.videoIds[idx]];
+      renderPlaylists();
+      markUnsaved();
+    });
+  });
+
+  // Vùng thả (drop zone)
+  playlistContainer.querySelectorAll('[data-drop-playlist]').forEach(zone => {
+    zone.addEventListener('dragover', e => e.preventDefault());
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      const videoId = e.dataTransfer.getData('text/plain');
+      addVideoToPlaylist(zone.dataset.dropPlaylist, videoId);
+    });
+  });
+}
+
+addPlaylistBtn.addEventListener('click', () => {
+  const name = newPlaylistName.value.trim();
+  if(!name) return;
+  PLAYLISTS.push({ id: 'pl_' + Date.now(), title: name, videoIds: [] });
+  newPlaylistName.value = '';
+  renderPlaylists();
+  markUnsaved();
+});
+newPlaylistName.addEventListener('keydown', e => { if(e.key === 'Enter') addPlaylistBtn.click(); });
+
+sourceSearch.addEventListener('input', () => renderSourceList(sourceSearch.value.trim()));
+
+function markUnsaved(){
+  saveStatus.textContent = 'Có thay đổi chưa lưu';
+  saveStatus.style.color = 'var(--gold)';
+}
+
+saveBtn.addEventListener('click', async () => {
+  saveBtn.disabled = true;
+  saveStatus.textContent = 'Đang lưu…';
+  saveStatus.style.color = 'var(--ink-dim)';
+  try{
+    const res = await fetch(`${API_BASE}/api/playlists`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Password': adminPassword
+      },
+      body: JSON.stringify({ playlists: PLAYLISTS })
+    });
+    const data = await res.json();
+    if(data.ok){
+      saveStatus.textContent = 'Đã lưu ✓';
+      saveStatus.style.color = 'var(--green)';
+    } else {
+      saveStatus.textContent = 'Lỗi: ' + (data.error || 'không lưu được');
+      saveStatus.style.color = 'var(--red)';
+    }
+  }catch(err){
+    saveStatus.textContent = 'Lỗi kết nối backend';
+    saveStatus.style.color = 'var(--red)';
+  }
+  saveBtn.disabled = false;
+});
+</script>
+
+</body>
+</html>
